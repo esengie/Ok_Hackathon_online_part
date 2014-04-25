@@ -1,0 +1,24 @@
+#extract features заново
+#day = week, second = day
+Итого 336,
+Модель 1 (которая на больших группах): 325
+Модель 2(на малых): 226
+#Если год < 2013 то ноль
+
+#Смотрим по месяцу кол-во лайков в группе
+
+Делим модель на две: большие группы - gbm, малые - regrssion tree
+
+
+gbm.predict = rep(0, dim(train.data)[1])
+
+gbm.predict <- predict(pfit2, train.data)#, best.iter1)
+#gbm.predict[dddtr] <- predict(pfit1, train.data[dddtr,])#, best.iter1)
+#gbm.predict[nnntr] <- predict(pfit2, train.data[nnntr,])#, best.iter2)
+gbm.predict[gbm.predict < 0] <- 0
+
+
+r2 = function(x, y) var(x-y)/var(x)
+mm = (1 - r2(train.data$likes, gbm.predict))*1000
+#mm1 = (1 - r2(train.data$likes[dddtr], gbm.predict[dddtr]))*1000
+#mm2 = (1 - r2(train.data$likes[nnntr], gbm.predict[nnntr]))*1000
